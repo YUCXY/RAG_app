@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display File</title>
+</head>
+<body>
+    <textarea id="document" name="document" rows="50" cols="150">
+        {% for line in content %}
+            {{ line }}
+        {% endfor %}
+    </textarea>
+</body>
+</html>

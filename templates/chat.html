@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <script>
+        function sendQuery() {
+            var queryInput = document.getElementById("query");
+            var query = queryInput.value.trim();
+            if (!query) {
+                alert("Please enter a query.");
+                return;
+            }
+    
+            queryInput.value = ""; // Clear input field
+            var outputBox = document.getElementById("output");
+            outputBox.value = ""; // Clear previous response before streaming
+    
+            fetch('/get_query', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: query })
+            })
+            .then(response => {
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+    
+                function readStream() {
+                    reader.read().then(({ done, value }) => {
+                        if (done) return;
+                        outputBox.value += decoder.decode(value); // Append new words
+                        outputBox.scrollTop = outputBox.scrollHeight; // Auto-scroll
+                        readStream(); // Continue reading
+                    });
+                }
+                readStream();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <h2>Chat:</h2>
+
+    <!-- Output Textarea -->
+    <textarea id="output" name="output" rows="50" cols="150" readonly></textarea>
+
+    <!-- Input Form -->
+    <form onsubmit="event.preventDefault(); sendQuery();">
+        <label for="query">Query:</label>
+        <input type="text" id="query" name="query" placeholder="Ask me something." size="150" required>
+        <button type="submit">Ask</button>
+    </form>
+</body>
+</html>
