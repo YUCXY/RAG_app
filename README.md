@@ -12,6 +12,7 @@ RAG application based on Python with Flask and served via a local webserver, usi
    cd Rag-Webapp
    conda create -n .ragapp python=3
    conda activate .ragapp
+   pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
    pip3 install -r requirements.txt
    ```
 3. Run the app
