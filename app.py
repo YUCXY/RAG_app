@@ -133,7 +133,7 @@ def display_file():
 @app.route('/chat', methods=['POST'])
 def chat():
     """
-    Chat with DeepSeek-v3 for RAG chat session about uploaded document or website.
+    Chat with LLM for RAG chat session about uploaded document or website.
     """
     return render_template('chat.html', content=[])
 
